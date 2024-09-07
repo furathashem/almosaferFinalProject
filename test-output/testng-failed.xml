@@ -5,7 +5,8 @@
     <classes>
       <class name="homepage.myTestCases">
         <methods>
-          <include name="CheckQitafLogo"/>
+          <include name="SortItemsLowestToHighestPrice"/>
+          <include name="checkThePageFullyLoaded"/>
           <include name="mySetUp"/>
         </methods>
       </class> <!-- homepage.myTestCases -->
