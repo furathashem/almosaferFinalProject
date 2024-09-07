@@ -168,10 +168,17 @@ String results=driver.findElement(By.xpath("//span[@data-testid='HotelSearchResu
 @Test(priority = 11)
 public void SortItemsLowestToHighestPrice()
 {
+	boolean expectedresult=true;
 	WebElement lowestpricesort=driver.findElement(By.xpath("//button[@data-testid='HotelSearchResult__sort__LOWEST_PRICE']"));
 	lowestpricesort.click();
-	
-	
+	WebElement pricescontainer=driver.findElement(By.cssSelector(".sc-htpNat.KtFsv.col-9"));
+	List<WebElement> Allprices=pricescontainer.findElements(By.className("Price__Value"));
+	String lowestprice=Allprices.get(0).getText();
+	String highestprice=Allprices.get(Allprices.size()-1).getText();
+	int lowestpriceASint=Integer.parseInt(lowestprice);
+	int highestpriceAsint=Integer.parseInt(highestprice);
+	boolean actualresult=lowestpriceASint<highestpriceAsint;
+	Assert.assertEquals(actualresult, expectedresult);
 	
 	
 	
