@@ -14,17 +14,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class myTestCases {
-	WebDriver driver = new ChromeDriver();
-	String AlmosaferURL = "http://global.almosafer.com/en";
-	String ExpectedDefaultLanguage = "en";
-	Random rand = new Random();
+public class myTestCases extends Parameters {
+	
 
 	@BeforeTest
 	public void mySetUp() {
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-		driver.get(AlmosaferURL);
+		GeneralSetup();
 		driver.findElement(By.cssSelector(".sc-jTzLTM.hQpNle.cta__button.cta__saudi.btn.btn-primary")).click();
 	}
 
@@ -36,25 +31,20 @@ public class myTestCases {
 
 	@Test(priority = 2)
 	public void CheckdefultCurrency() {
-		String ExpectedCurrency = "SAR";
-		WebElement Currency = driver.findElement(By.xpath("//button[@data-testid='Header__CurrencySelector']"));
-		Currency.getText();
-		String ActualCurrency = Currency.getText();
+		
+		String ActualCurrency  = driver.findElement(By.xpath("//button[@data-testid='Header__CurrencySelector']")).getText();
 		Assert.assertEquals(ActualCurrency, ExpectedCurrency);
 
 	}
 
 	@Test(priority = 3)
 	public void checkContantNumber() {
-		String ExpectedContantNumber = "+966554400000";
-		WebElement Number = driver.findElement(By.tagName("strong"));
-		String ActualContantNumber = Number.getText();
+		String ActualContantNumber = driver.findElement(By.tagName("strong")).getText();
 		Assert.assertEquals(ActualContantNumber, ExpectedContantNumber);
 	}
 
 	@Test(priority = 4)
 	public void CheckQitafLogo() {
-		boolean ExpectedResult = true;
 		WebElement TheFooter = driver.findElement(By.tagName("footer"));
 //	//boolean ActualResultForThelogo=	TheFooter.findElement(By.cssSelector(".sc-bdVaJa.bxRSiR.sc-ekulBa.eYboXF")).isDisplayed();
 //		WebElement thediv=driver.findElement(By.cssSelector(".sc-fihHvN.eYrDjb"));
@@ -68,21 +58,13 @@ public class myTestCases {
 
 	@Test(priority = 5)
 	public void TestHotelTabIsNotSelected() {
-		String expectedvalue = "false";
-		WebElement hoteltab = driver.findElement(By.id("uncontrolled-tab-example-tab-hotels"));
-		String actualvalue = hoteltab.getAttribute("aria-selected");
+		String actualvalue = driver.findElement(By.id("uncontrolled-tab-example-tab-hotels")).getAttribute("aria-selected");
 		Assert.assertEquals(actualvalue, expectedvalue);
 	}
 
 	@Test(priority = 6)
 	public void CheckDepatureDate() {
-		LocalDate todaydate = LocalDate.now();
-		todaydate.getDayOfMonth();
-		int today = todaydate.getDayOfMonth();
-		int tomorrow = todaydate.plusDays(1).getDayOfMonth();
-		int TheDayAfterTomorrow = todaydate.plusDays(2).getDayOfMonth();
 		List<WebElement> depatureandarrivaldates = driver.findElements(By.className("LiroG"));
-
 //	WebElement arrivaldates=driver.findElement(By.xpath("//span[normalize-space()='09']"));
 		String ActualDepatureDate = depatureandarrivaldates.get(0).getText();
 		String ActualReturnDate = depatureandarrivaldates.get(1).getText();
@@ -95,19 +77,11 @@ public class myTestCases {
 
 	@Test(priority = 7)
 	public void RandomlyChangeTheLanguage() {
-		String[] URLs = { "https://www.almosafer.com/en", "https://www.almosafer.com/ar" };
-
-		int RandomIndex = rand.nextInt(URLs.length);
-
-		driver.get(URLs[RandomIndex]);
+	RandomSelectTheLanguageofthewebsite();
 	}
 	@Test(priority = 8)
 	public void FillHotelTab()
 	{
-		String[] EnglishCities= {"Dubbai","Jeddah","riyadh"};
-				String[] Arabiccities= {"جدة","دبي"};
-				int randomenglish=rand.nextInt(EnglishCities.length);
-				int randomarabic=rand.nextInt(Arabiccities.length);
 		WebElement HotelTab=driver.findElement(By.id("uncontrolled-tab-example-tab-hotels"));
 		HotelTab.click();
 		String websiteurl=driver.getCurrentUrl();
@@ -124,11 +98,6 @@ public class myTestCases {
 	WebElement ListOfLocations=driver.findElement(By.cssSelector(".sc-phbroq-2.uQFRS.AutoComplete__Input"));
 WebElement finalresult=	driver.findElements(By.tagName("li")).get(1);
 finalresult.click();
-	
-	
-	
-	
-	
 	}
 @Test(priority = 9)
 public void RandomlySelectTheNumberOfVisitors()
@@ -136,7 +105,6 @@ public void RandomlySelectTheNumberOfVisitors()
 	WebElement selectofthevisitor=driver.findElement(By.xpath("//select[@data-testid='HotelSearchBox__ReservationSelect_Select']"));
 	Select select=new Select(selectofthevisitor);
 		//By Index
-	int randomindex=rand.nextInt(2);
 select.selectByIndex(randomindex);
 	//By Value
 //	select.selectByValue("B");
@@ -156,10 +124,9 @@ searchbutton.click();
 @Test(priority = 10)
 public void checkThePageFullyLoaded() throws InterruptedException
 {
-	boolean expectedresult=true;
 	Thread.sleep(10000);
 String results=driver.findElement(By.xpath("//span[@data-testid='HotelSearchResult__resultsFoundCount']")).getText();
-	boolean finished=results.contains("وجدنا")||results.contains("found");
+boolean finished=results.contains("وجدنا")||results.contains("found");
 	System.out.println(finished);
 	//Assert.assertEquals(finished, expectedresult);
 	
@@ -168,7 +135,7 @@ String results=driver.findElement(By.xpath("//span[@data-testid='HotelSearchResu
 @Test(priority = 11)
 public void SortItemsLowestToHighestPrice()
 {
-	boolean expectedresult=true;
+	
 	WebElement lowestpricesort=driver.findElement(By.xpath("//button[@data-testid='HotelSearchResult__sort__LOWEST_PRICE']"));
 	lowestpricesort.click();
 	WebElement pricescontainer=driver.findElement(By.cssSelector(".sc-htpNat.KtFsv.col-9"));
@@ -178,7 +145,7 @@ public void SortItemsLowestToHighestPrice()
 	int lowestpriceASint=Integer.parseInt(lowestprice);
 	int highestpriceAsint=Integer.parseInt(highestprice);
 	boolean actualresult=lowestpriceASint<highestpriceAsint;
-	Assert.assertEquals(actualresult, expectedresult);
+	Assert.assertEquals(actualresult, expectedresult2);
 	
 	
 	
